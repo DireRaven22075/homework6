@@ -27,8 +27,8 @@ void printQ(QueueType *cQ);
 void debugQ(QueueType *cQ);
 element getElement();
 
-int main(void)
-{
+int main(void) {
+	printf("[-------------2023041004 ------- 한윤수 --------------]\n");
 	QueueType *cQ = createQueue();
 	element data;
 	char command;
@@ -136,8 +136,7 @@ void deQueue(QueueType *cQ, element *item) {
 }
 
 
-void printQ(QueueType *cQ)
-{
+void printQ(QueueType *cQ) {
 	int i, first, last;
 
 	first = (cQ->front + 1)%MAX_QUEUE_SIZE;
