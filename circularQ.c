@@ -96,15 +96,13 @@ element getElement() {
 
 
 /* complete the function */
-int isEmpty(QueueType *cQ)
-{
-	return 1;
+int isEmpty(QueueType *cQ) {
+	return cQ->front == cQ->rear;
 }
 
 /* complete the function */
-int isFull(QueueType *cQ)
-{
-	return 1;
+int isFull(QueueType *cQ) {
+	return (cQ->rear + 1) % MAX_QUEUE_SIZE == cQ->front;
 }
 
 
