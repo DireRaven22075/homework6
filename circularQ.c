@@ -45,11 +45,19 @@ int main(void)
 
 		switch(command) {
 		case 'i': case 'I':
-			data = getElement();
-			enQueue(cQ, data);
+			if (isFull(cQ)) {
+				printf("큐가 가득 찼습니다.\n");
+			} else {
+				data = getElement();
+				enQueue(cQ, data);
+			}
 			break;
 		case 'd': case 'D':
-			deQueue(cQ, &data);
+			if (isEmpty(cQ)) {
+				printf("큐가 비어있습니다.\n");
+			} else {
+				deQueue(cQ, &data);
+			}
 			break;
 		case 'p': case 'P':
 			printQ(cQ);
