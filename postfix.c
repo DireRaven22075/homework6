@@ -33,23 +33,13 @@ int evalStackTop = -1;	   /* evalStack용 top */
 
 int evalResult = 0;	   /* 계산 결과를 저장 */
 
-void postfixpush(char x);
-char postfixPop();
-void evalPush(int x);
-int evalPop();
-void getInfix();
-precedence getToken(char symbol);
-precedence getPriority(char x);
-void charCat(char* c);
-void toPostfix();
-void debug();
-void reset();
-void evaluation();
+void postfixpush(char x); char postfixPop(); void evalPush(int x);
+int evalPop(); void getInfix(); precedence getToken(char symbol); precedence getPriority(char x);
+void charCat(char* c); void toPostfix(); void debug(); void reset(); void evaluation();
 
-int main()
-{
+int main() {
+	printf("[-------------2023041004 ------- 한윤수 --------------]\n");
 	char command;
-
 	do{
 		printf("----------------------------------------------------------------\n");
 		printf("               Infix to Postfix, then Evaluation               \n");
