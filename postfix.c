@@ -219,8 +219,27 @@ void reset()
 	evalResult = 0;
 }
 
-void evaluation()
-{
-	
+void evaluation() {
+	int i = 0;
+	char token;
+	int operand1, operand2;
+	while (postfixExp[i] != '\0') {
+		token = postfixExp[i];
+		if (getToken(token) == operand) {
+			evalPush(token - '0'); // Convert char to int
+		} else {
+			operand2 = evalPop();
+			operand1 = evalPop();
+			switch (token) {
+				case '+': evalPush(operand1 + operand2); break;
+				case '-': evalPush(operand1 - operand2); break;
+				case '*': evalPush(operand1 * operand2); break;
+				case '/': evalPush(operand1 / operand2); break;
+			}
+		}
+		i++;
+	}
+	evalResult = evalPop();
+	printf("계산결과: %d\n", evalResult);
 }
 
