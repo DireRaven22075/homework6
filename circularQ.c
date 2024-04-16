@@ -113,8 +113,10 @@ void enQueue(QueueType *cQ, element item) {
 }
 
 /* complete the function */
-void deQueue(QueueType *cQ, element *item)
-{
+void deQueue(QueueType *cQ, element *item) {
+	cQ->front = (cQ->front + 1) % MAX_QUEUE_SIZE;
+	*item = cQ->queue[cQ->front];
+	cQ->queue[cQ->front] = ' ';
     return 0;
 }
 
