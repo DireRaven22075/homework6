@@ -87,8 +87,7 @@ int freeQueue(QueueType *cQ)
     return 1;
 }
 
-element getElement()
-{
+element getElement() {
 	element item;
 	printf("Input element = ");
 	scanf(" %c", &item);
