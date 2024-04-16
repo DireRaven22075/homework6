@@ -127,29 +127,26 @@ void getInfix()
     scanf("%s",infixExp);
 }
 
-precedence getToken(char symbol)
-{
+precedence getToken(char symbol) {
 	switch(symbol) {
-	case '(' : return lparen;
-	case ')' : return rparen;
-	case '+' : return plus;
-	case '-' : return minus;
-	case '/' : return divide;
-	case '*' : return times;
-	default : return operand;
+		case '(' : return lparen;
+		case ')' : return rparen;
+		case '+' : return plus;
+		case '-' : return minus;
+		case '/' : return divide;
+		case '*' : return times;
+		default : return operand;
 	}
 }
 
-precedence getPriority(char x)
-{
+precedence getPriority(char x) {
 	return getToken(x);
 }
 
 /**
  * 문자하나를 전달받아, postfixExp에 추가
  */
-void charCat(char* c)
-{
+void charCat(char* c) {
 	if (postfixExp == '\0')
 		strncpy(postfixExp, c, 1);
 	else
@@ -160,35 +157,53 @@ void charCat(char* c)
  * infixExp의 문자를 하나씩 읽어가면서 stack을 이용하여 postfix로 변경한다.
  * 변경된 postfix는 postFixExp에 저장된다.
  */
-void toPostfix()
-{
-	/* infixExp의 문자 하나씩을 읽기위한 포인터 */
-	char *exp = infixExp;
+void toPostfix() {
+	char *exp = infixExp; /* infixExp의 문자 하나씩을 읽기위한 포인터 */
 	char x; /* 문자하나를 임시로 저장하기 위한 변수 */
 
 	/* exp를 증가시켜가면서, 문자를 읽고 postfix로 변경 */
-	while(*exp != '\0')
-	{
-		/* 필요한 로직 완성 */
-
+	while(*exp != '\0') {
+		if (getToken(*exp) == operand) {
+			//연산자가 아니면 postfixExp에 추가
+			charCat(exp);
+		}
+		else {
+			//연산자일 경우
+			if (postfixStackTop == -1) {
+				//스택이 비어있는 경우
+				postfixPush(*exp);
+			}
+			else {
+				//스택이 비어있지 않은 경우
+				if (getPriority(*exp) > getPriority(postfixStack[postfixStackTop])) {
+					postfixPush(*exp);
+				}
+				else {
+					//스택의 top에 있는 연산자의 우선순위가 높아질 때까지 pop하여 postfixExp에 추가
+					while (postfixStackTop != -1 && getPriority(*exp) <= getPriority(postfixStack[postfixStackTop])) {
+						x = postfixPop();
+						charCat(&x);
+					}
+					postfixPush(*exp);
+				}
+			}
+		}
+		exp++;
 	}
-
-	/* 필요한 로직 완성 */
-
+	while (postfixStackTop != -1) {
+		x = postfixPop();
+		charCat(&x);
+	}
 }
-void debug()
-{
+void debug() {
 	printf("\n---DEBUG\n");
 	printf("infixExp =  %s\n", infixExp);
 	printf("postExp =  %s\n", postfixExp);
 	printf("eval result = %d\n", evalResult);
-
 	printf("postfixStack : ");
 	for(int i = 0; i < MAX_STACK_SIZE; i++)
 		printf("%c  ", postfixStack[i]);
-
 	printf("\n");
-
 }
 
 void reset()
@@ -206,6 +221,6 @@ void reset()
 
 void evaluation()
 {
-	/* postfixExp, evalStack을 이용한 계산 */
+	
 }
 
