@@ -153,14 +153,9 @@ void charCat(char* c) {
 		strncat(postfixExp, c, 1);
 }
 
-/**
- * infixExp의 문자를 하나씩 읽어가면서 stack을 이용하여 postfix로 변경한다.
- * 변경된 postfix는 postFixExp에 저장된다.
- */
 void toPostfix() {
 	char *exp = infixExp; /* infixExp의 문자 하나씩을 읽기위한 포인터 */
 	char x; /* 문자하나를 임시로 저장하기 위한 변수 */
-
 	/* exp를 증가시켜가면서, 문자를 읽고 postfix로 변경 */
 	while(*exp != '\0') {
 		if (getToken(*exp) == operand) {
@@ -171,30 +166,36 @@ void toPostfix() {
 			//연산자일 경우
 			if (postfixStackTop == -1) {
 				//스택이 비어있는 경우
+				//스택이 비어있으면 연산자를 스택에 push
 				postfixPush(*exp);
 			}
 			else {
 				//스택이 비어있지 않은 경우
+				//현재 연산자의 우선순위가 스택의 top에 있는 연산자의 우선순위보다 높은 경우
 				if (getPriority(*exp) > getPriority(postfixStack[postfixStackTop])) {
 					postfixPush(*exp);
 				}
+				//현재 연산자의 우선순위가 스택의 top에 있는 연산자의 우선순위보다 낮거나 같은 경우
 				else {
 					//스택의 top에 있는 연산자의 우선순위가 높아질 때까지 pop하여 postfixExp에 추가
 					while (postfixStackTop != -1 && getPriority(*exp) <= getPriority(postfixStack[postfixStackTop])) {
 						x = postfixPop();
 						charCat(&x);
 					}
+					//현재 연산자를 스택에 push
 					postfixPush(*exp);
 				}
 			}
 		}
 		exp++;
 	}
+	//스택에 남아있는 연산자들을 모두 pop하여 postfixExp에 추가
 	while (postfixStackTop != -1) {
 		x = postfixPop();
 		charCat(&x);
 	}
 }
+
 void debug() {
 	printf("\n---DEBUG\n");
 	printf("infixExp =  %s\n", infixExp);
@@ -220,17 +221,21 @@ void reset()
 }
 
 void evaluation() {
-	int i = 0;
-	char token;
+	int i = 0; char token;
 	int operand1, operand2;
+	//표현식 끝까지 반복
 	while (postfixExp[i] != '\0') {
+		//토큰을 읽어옴
 		token = postfixExp[i];
 		if (getToken(token) == operand) {
-			evalPush(token - '0'); // Convert char to int
+			//피연산자일 경우 스택에 push
+			//숫자로 변환하기 위해 ascii 코드에서 '0'을 빼줌 ('3' -> 3)
+			evalPush(token - '0'); 
 		} else {
+			//연산자일 경우 pop을 통해 피연산자 2개를 가져온 후 연산 수행
 			operand2 = evalPop();
 			operand1 = evalPop();
-			switch (token) {
+			switch (token) { //연산 수행
 				case '+': evalPush(operand1 + operand2); break;
 				case '-': evalPush(operand1 - operand2); break;
 				case '*': evalPush(operand1 * operand2); break;
@@ -239,6 +244,7 @@ void evaluation() {
 		}
 		i++;
 	}
+	//계산 결과를 evalResult에 저장
 	evalResult = evalPop();
 	printf("계산결과: %d\n", evalResult);
 }
