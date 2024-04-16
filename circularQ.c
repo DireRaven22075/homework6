@@ -45,6 +45,7 @@ int main(void)
 
 		switch(command) {
 		case 'i': case 'I':
+			//만약 큐가 가득 찼을 경우 명령 실행 중지
 			if (isFull(cQ)) {
 				printf("큐가 가득 찼습니다.\n");
 			} else {
@@ -53,10 +54,12 @@ int main(void)
 			}
 			break;
 		case 'd': case 'D':
+			//만약 큐가 비어있을 경우 명령 실행 중지
 			if (isEmpty(cQ)) {
 				printf("큐가 비어있습니다.\n");
 			} else {
 				deQueue(cQ, &data);
+				printf("%c가 삭제되었습니다.\n", data);
 			}
 			break;
 		case 'p': case 'P':
@@ -105,16 +108,19 @@ element getElement() {
 
 /* complete the function */
 int isEmpty(QueueType *cQ) {
+	//프론트와 리어가 같을 경우 (앞과 뒤의 위치가 같을 경우) 큐가 비어있는 것으로 판단
 	return cQ->front == cQ->rear;
 }
 
 /* complete the function */
 int isFull(QueueType *cQ) {
+	//리어의 다음 위치가 프론트일 경우 큐가 가득 찬 것으로 판단
 	return (cQ->rear + 1) % MAX_QUEUE_SIZE == cQ->front;
 }
 
 /* complete the function */
 void enQueue(QueueType *cQ, element item) {
+	//리어의 위치를 한 칸 뒤로 옮긴 후 그 위치에 아이템을 넣음
 	cQ->rear = (cQ->rear + 1) % MAX_QUEUE_SIZE;
 	cQ->queue[cQ->rear] = item;
 	return;
@@ -122,10 +128,11 @@ void enQueue(QueueType *cQ, element item) {
 
 /* complete the function */
 void deQueue(QueueType *cQ, element *item) {
+	//프론트의 위치를 한 칸 뒤로 옮긴 후 그 위치의 아이템을 반환하고 그 위치를 공백으로 초기화
 	cQ->front = (cQ->front + 1) % MAX_QUEUE_SIZE;
 	*item = cQ->queue[cQ->front];
 	cQ->queue[cQ->front] = ' ';
-    return 0;
+    return;
 }
 
 
