@@ -105,11 +105,11 @@ int isFull(QueueType *cQ) {
 	return (cQ->rear + 1) % MAX_QUEUE_SIZE == cQ->front;
 }
 
-
 /* complete the function */
-void enQueue(QueueType *cQ, element item)
-{
-	return 0;
+void enQueue(QueueType *cQ, element item) {
+	cQ->rear = (cQ->rear + 1) % MAX_QUEUE_SIZE;
+	cQ->queue[cQ->rear] = item;
+	return;
 }
 
 /* complete the function */
